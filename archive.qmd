@@ -153,13 +153,22 @@ Snapshot-Verzeichnis separat aufbewahrt und ein neuer Snapshot erstellt werden.
 
 ## Veröffentlichung auf GitHub Pages
 
-Das Verzeichnis `docs/` enthält die vollständige veröffentlichbare Fassung.
-Es kann direkt von einem Repository-Zweig veröffentlicht werden (Ordner `/docs`).
-Alternativ veröffentlicht der mitgelieferte Workflow ausschließlich diesen Ordner,
-wenn im Repository **Settings → Pages → Source → GitHub Actions** gewählt wird.
-Es wird keine eigene Domain vorausgesetzt.
+Zieladresse der Archivfassung: [roadshow.tscnlab.org](https://roadshow.tscnlab.org/).
+Das Repository ist [tscnlab/website-roadshow](https://github.com/tscnlab/website-roadshow).
 
-[GitHub-Anleitung zur Veröffentlichungsquelle](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+Das Verzeichnis `docs/` enthält die vollständige veröffentlichbare Fassung.
+Der mitgelieferte Workflow prüft die Archivdateien und veröffentlicht ausschließlich
+diesen Ordner nach Änderungen auf `main`. Pull Requests werden geprüft, aber nicht
+veröffentlicht. Änderungen an den Quellen werden vor dem Commit mit `quarto render`
+in die ausgelieferten HTML-Dateien übernommen.
+
+In **Settings → Pages** sind **GitHub Actions** und die eigene Domain
+`roadshow.tscnlab.org` eingestellt. Der Deployment-Schritt prüft diese Domain vor
+jeder Veröffentlichung. DNS verweist per CNAME auf `tscnlab.github.io`.
+Bei dieser Veröffentlichungsart steuern die Repository-Einstellungen die Domain;
+eine `CNAME`-Datei im Website-Verzeichnis wird von GitHub nicht verwendet.
+
+[GitHub-Anleitung zu eigenen Domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 
 ## Urheberschaft
 

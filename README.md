@@ -1,6 +1,6 @@
 # Nachtmensch oder Frühaufsteher? — website archive
 
-A static preservation copy of <https://nachtmensch-oder-fruehaufsteher.de/>, ready for GitHub Pages. The original German content and design are retained, with an archive notice, local assets, local PDF downloads, and disabled submission forms.
+A static preservation copy of <https://nachtmensch-oder-fruehaufsteher.de/>, hosted on GitHub Pages at <https://roadshow.tscnlab.org/>. The original German content and design are retained, with an archive notice, local assets, local PDF downloads, and disabled submission forms.
 
 ## Deliverables
 
@@ -35,16 +35,32 @@ Rendering `archive.qmd` verifies original checksums, rebuilds `docs/`, and produ
 
 ## Publish on GitHub Pages
 
-1. Add these files to the intended GitHub repository and push to `main`.
-2. Open **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-3. Run **Publish archive to GitHub Pages** in the Actions tab, or push a change to `main`.
-4. Use the URL reported by the deployment job. No custom domain is configured.
+Repository: <https://github.com/tscnlab/website-roadshow>
 
-The workflow only uploads `docs/`; the source snapshot, build tools and notebook source are not in the website artifact. If the default branch is not `main`, update the workflow's branch filter. As an alternative, use **Deploy from a branch → main → /docs**. `.nojekyll` prevents Jekyll from processing the preserved WordPress directories.
+Website: <https://roadshow.tscnlab.org/>
 
-Relative navigation and asset URLs support both `https://OWNER.github.io/REPO/` and root-domain hosting.
+GitHub Pages uses **GitHub Actions** as its publishing source, with the custom domain
+`roadshow.tscnlab.org` saved in **Settings → Pages**. DNS must retain the CNAME
+`roadshow.tscnlab.org → tscnlab.github.io`. Enable **Enforce HTTPS** once GitHub's
+certificate is available.
 
-See [GitHub's publishing documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+Push to `main` or run **Publish archive to GitHub Pages** manually from the Actions
+page. The workflow validates all local references and source-content preservation,
+then uploads only `docs/`. A separate deployment job checks the configured custom
+domain and publishes that validated artifact. Pull requests run validation without
+publishing. The Python runtime and parser versions are explicitly selected.
+
+The workflow publishes the committed HTML; after editing the notebook, banner, or
+archive builder, run `quarto render` as documented above and commit the regenerated
+`docs/` files alongside the sources. The original-site snapshot is never refreshed
+by the publishing workflow.
+
+For this Actions-based deployment, the repository's Pages settings control the
+custom domain; GitHub ignores `CNAME` files in the artifact. `.nojekyll` is included
+for compatibility with static hosting. Relative links support the custom domain
+and a GitHub Pages project path.
+
+See [GitHub's custom-domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 
 ## Capture or resume
 

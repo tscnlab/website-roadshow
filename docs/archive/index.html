@@ -3363,8 +3363,10 @@ background: #112639;
 </section>
 <section id="veröffentlichung-auf-github-pages" class="level2">
 <h2 class="anchored" data-anchor-id="veröffentlichung-auf-github-pages">Veröffentlichung auf GitHub Pages</h2>
-<p>Das Verzeichnis <code>docs/</code> enthält die vollständige veröffentlichbare Fassung. Es kann direkt von einem Repository-Zweig veröffentlicht werden (Ordner <code>/docs</code>). Alternativ veröffentlicht der mitgelieferte Workflow ausschließlich diesen Ordner, wenn im Repository <strong>Settings → Pages → Source → GitHub Actions</strong> gewählt wird. Es wird keine eigene Domain vorausgesetzt.</p>
-<p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">GitHub-Anleitung zur Veröffentlichungsquelle</a></p>
+<p>Zieladresse der Archivfassung: <a href="https://roadshow.tscnlab.org/">roadshow.tscnlab.org</a>. Das Repository ist <a href="https://github.com/tscnlab/website-roadshow">tscnlab/website-roadshow</a>.</p>
+<p>Das Verzeichnis <code>docs/</code> enthält die vollständige veröffentlichbare Fassung. Der mitgelieferte Workflow prüft die Archivdateien und veröffentlicht ausschließlich diesen Ordner nach Änderungen auf <code>main</code>. Pull Requests werden geprüft, aber nicht veröffentlicht. Änderungen an den Quellen werden vor dem Commit mit <code>quarto render</code> in die ausgelieferten HTML-Dateien übernommen.</p>
+<p>In <strong>Settings → Pages</strong> sind <strong>GitHub Actions</strong> und die eigene Domain <code>roadshow.tscnlab.org</code> eingestellt. Der Deployment-Schritt prüft diese Domain vor jeder Veröffentlichung. DNS verweist per CNAME auf <code>tscnlab.github.io</code>. Bei dieser Veröffentlichungsart steuern die Repository-Einstellungen die Domain; eine <code>CNAME</code>-Datei im Website-Verzeichnis wird von GitHub nicht verwendet.</p>
+<p><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">GitHub-Anleitung zu eigenen Domains</a></p>
 </section>
 <section id="urheberschaft" class="level2">
 <h2 class="anchored" data-anchor-id="urheberschaft">Urheberschaft</h2>
