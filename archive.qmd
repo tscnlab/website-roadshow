@@ -1,0 +1,169 @@
+---
+title: "Nachtmensch oder Frühaufsteher?"
+subtitle: "Dokumentation des Website-Archivs"
+output-file: index.html
+---
+
+[← Zur archivierten Website](../index.html)
+
+Dieses Archiv bewahrt die öffentlich zugänglichen Seiten der Wissenschaftsroadshow
+„Nachtmensch oder Frühaufsteher?“. Das Projekt ist abgeschlossen; diese Website
+bleibt zu Dokumentations- und Archivzwecken erhalten. Texte, Abbildungen, Termine und die Gestaltung
+stammen von der [Originalwebsite](https://nachtmensch-oder-fruehaufsteher.de/).
+Die Inhalte beschreiben den damaligen Stand; insbesondere sind Veranstaltungstermine
+und Kontaktangebote keine aktuellen Ankündigungen.
+
+::: {lang="en"}
+**This project has ended.** This website is preserved for documentation and archival purposes.
+:::
+
+## Gesicherter Stand
+
+Die folgenden Angaben werden aus dem gespeicherten Download-Verzeichnis berechnet.
+Das Rendern dieses Quarto-Notebooks baut die archivierte Website **ohne Zugriff auf
+die Originalwebsite** neu auf und prüft die gespeicherten SHA-256-Prüfsummen.
+
+```{python}
+#| label: rebuild
+import json
+from pathlib import Path
+from IPython.display import HTML, display
+from scripts.archive_site import build, validate, ROOT, SITE
+
+summary = build()
+manifest = json.loads((ROOT / "snapshot/manifest.json").read_text())
+captured = manifest["started_at"][:10]
+display(HTML(
+    f"<p><strong>Archiviert am:</strong> {captured} (UTC)<br>"
+    f"<strong>Seiten:</strong> {summary['page_count']}<br>"
+    f"<strong>Gespeicherte Dateien:</strong> {summary['file_count']}<br>"
+    f"<strong>Umfang der Originaldateien:</strong> {summary['source_bytes']/1024**2:.1f} MiB</p>"
+))
+```
+
+## Seitenverzeichnis
+
+```{python}
+#| label: pages
+from bs4 import BeautifulSoup
+from html import escape
+from urllib.parse import quote
+
+rows = []
+for record in manifest["files"]:
+    if record["kind"] != "page":
+        continue
+    soup = BeautifulSoup((ROOT / "snapshot/files" / record["path"]).read_text(), "html5lib")
+    title = soup.title.get_text() if soup.title else record["path"]
+    href = "../" + quote(record["path"])
+    rows.append(f'<tr><td><a href="{href}">{escape(title)}</a></td>'
+                f'<td><code>{escape(record["path"])}</code></td></tr>')
+display(HTML('<table><thead><tr><th>Seite</th><th>Archivpfad</th></tr></thead>'
+             '<tbody>' + ''.join(rows) + '</tbody></table>'))
+```
+
+## Anpassungen für die Archivfassung
+
+- Jede Seite trägt einen sichtbaren Hinweis auf Deutsch und Englisch auf den Projektabschluss, den Erhalt
+  zu Dokumentations- und Archivzwecken und das Datum der Sicherung.
+- Interne Links, Bilder, Schriftdateien und Stylesheets verweisen auf lokale Dateien.
+  Die relativen Pfade funktionieren auch unter einem GitHub-Pages-Projektpfad.
+- Die ursprünglichen Skripte für Navigation, Tabs, Akkordeons, Bilder und Hotspots
+  bleiben soweit möglich erhalten; die zugehörigen Elementor-Skriptmodule sind mitgesichert.
+- Kontakt- und Anmeldeformulare sind sichtbar, aber deaktiviert. Es werden keine
+  Formulareingaben versendet. Analyse-, Cookie-Verwaltungs- und Formularskripte
+  wurden aus den ausgelieferten Seiten entfernt.
+- Auf der Kontaktseite lieferte die Originalwebsite bereits kein Formular aus;
+  die leere Stelle trägt deshalb einen entsprechenden Hinweis.
+- Die serverabhängige Pressemappe wurde durch einen lokalen PDF-Viewer mit
+  Download-Link ersetzt. Zusätzlich sind alle drei öffentlichen PDF-Anhänge
+  aus dem gesicherten Medienverzeichnis enthalten.
+- Externe eingebettete Inhalte werden als Links angeboten. Eine Content Security Policy
+  beschränkt aktive Inhalte auf die Archivdateien und verhindert Hintergrundanfragen.
+- Suchmaschinen erhalten `noindex, follow`. Die ursprünglichen kanonischen URLs
+  bleiben als Herkunftsangaben erhalten; alte strukturierte Suchdaten wurden entfernt.
+- Eine auf dem Originalserver fehlende Lightbox-Spezialdatei wird durch das
+  gesicherte Standard-Stylesheet desselben Plugins ersetzt. Ein ebenfalls fehlendes,
+  unbenutztes Video-Symbol des Karussell-Plugins wird nicht eingebunden.
+
+Die unveränderten Originaldateien liegen unter `snapshot/files/`. Das Manifest
+`snapshot/manifest.json` dokumentiert Herkunfts-URL, Abrufzeitpunkt, HTTP-Status,
+Dateityp, Dateigröße und SHA-256-Prüfsumme. Die Anpassungen betreffen ausschließlich
+die daraus erzeugte Fassung unter `docs/`.
+
+## Umfang und Grenzen
+
+Die Erfassung folgt den öffentlichen Seiten-, Beitrags- und Flipbook-Sitemaps sowie
+intern verlinkten Seiten und ihren Dateien. Autoren-, Kategorie- und Schlagwortindizes,
+Feeds, Administrationsoberflächen und allgemeine API-Endpunkte sind nicht Teil des
+veröffentlichten Archivs. Die öffentliche Liste der PDF-Anhänge wurde ausschließlich
+als Quelldokument zur Erfassung der Downloads gespeichert.
+
+Externe Zielseiten sind nicht mitarchiviert. Ihre Links benötigen weiterhin einen
+Internetzugang und können sich ändern. Die Archivfassung enthält keine WordPress-Datenbank,
+keine serverseitige Suche und keinen Nachrichtenversand. Einträge unter Impressum und
+Datenschutz sind historische Inhalte der Originalwebsite und beschreiben deren Betreiber
+und damalige technische Umgebung. Sie sind keine neu verfassten Angaben zum Archivhosting.
+
+```{python}
+#| label: source-failures
+failures = manifest.get("failures", [])
+if failures:
+    display(HTML("<p>Folgende Quelldateien waren beim Abruf nicht verfügbar:</p><ul>" +
+        "".join(f"<li><code>{escape(x['url'])}</code>: {escape(x['error'])}</li>" for x in failures) + "</ul>"))
+else:
+    display(HTML("<p>Alle angeforderten Quelldateien wurden erfolgreich gesichert.</p>"))
+```
+
+## Technische Prüfung
+
+```{python}
+#| label: validation
+# The report's own output is created after notebook execution. A temporary
+# destination makes its link resolvable during the first offline build.
+report_path = SITE / "archive/index.html"
+report_path.parent.mkdir(parents=True, exist_ok=True)
+if not report_path.exists():
+    report_path.write_text("<!doctype html><title>Archivdokumentation</title>")
+checks = validate()
+assert not checks["errors"], "\n".join(checks["errors"])
+display(HTML(f"<p><strong>{checks['checked_local_references']:,} lokale Verweise geprüft.</strong> "
+             "Keine fehlenden lokalen Dateien und keine aktiven Formulare gefunden. "
+             "Die Prüfung umfasst HTML, responsive Bildquellen, CSS-Dateien und dynamische Skriptmodule. "
+             f"Originaltexte, Überschriften, Bildanzahl und Stylesheets aller {checks['pages_verified_against_original']} Seiten sind erhalten. "
+             "Sie ersetzt keinen vollständigen Interaktionstest im Browser.</p>"))
+```
+
+## Reproduktion
+
+Voraussetzungen: Python 3.11 oder neuer und Quarto. Vom Projektverzeichnis aus:
+
+```{.bash}
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+QUARTO_PYTHON="$PWD/.venv/bin/python" quarto render
+.venv/bin/python scripts/archive_site.py validate
+python3 -m http.server 8000 --directory docs
+```
+
+Ein erneuter Netzabruf ist zum Reproduzieren dieses Archivs nicht erforderlich.
+`scripts/archive_site.py capture` setzt eine unterbrochene Erfassung fort und verwendet
+bereits gesicherte Dateien weiter. Für einen neuen historischen Stand muss das bisherige
+Snapshot-Verzeichnis separat aufbewahrt und ein neuer Snapshot erstellt werden.
+
+## Veröffentlichung auf GitHub Pages
+
+Das Verzeichnis `docs/` enthält die vollständige veröffentlichbare Fassung.
+Es kann direkt von einem Repository-Zweig veröffentlicht werden (Ordner `/docs`).
+Alternativ veröffentlicht der mitgelieferte Workflow ausschließlich diesen Ordner,
+wenn im Repository **Settings → Pages → Source → GitHub Actions** gewählt wird.
+Es wird keine eigene Domain vorausgesetzt.
+
+[GitHub-Anleitung zur Veröffentlichungsquelle](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
+## Urheberschaft
+
+Texte, Fotografien, Grafiken, Logos, Schriftdateien und mitgesicherte Fremdsoftware
+behalten ihre jeweiligen Rechte und Lizenzbedingungen. Die Archivierung vergibt
+keine neue Lizenz für diese Inhalte. Quellen- und Urheberangaben innerhalb der
+Originalseiten und der mitgesicherten Dateien bleiben erhalten.

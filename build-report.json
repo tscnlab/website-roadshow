@@ -1,0 +1,43 @@
+{
+  "source": "https://nachtmensch-oder-fruehaufsteher.de/",
+  "captured_at": "2026-09-26T10:27:27.379583+00:00",
+  "page_count": 24,
+  "file_count": 273,
+  "source_bytes": 19615140,
+  "modifications": [
+    {
+      "page": "index.html",
+      "change": "Form submission disabled"
+    },
+    {
+      "page": "3d-flip-book/roadshow-pressemappe/index.html",
+      "change": "WordPress flipbook replaced with local PDF"
+    },
+    {
+      "page": "kontakt/index.html",
+      "change": "Empty original contact-form widget labelled unavailable"
+    },
+    {
+      "page": "medien-und-presse/index.html",
+      "change": "WordPress flipbook replaced with local PDF"
+    },
+    {
+      "page": "wp-content/plugins/unlimited-elements-for-elementor-premium/assets_libraries/owl-carousel-new/assets/owl.carousel.css",
+      "change": "Unavailable source CSS image omitted: https://nachtmensch-oder-fruehaufsteher.de/wp-content/plugins/unlimited-elements-for-elementor-premium/assets_libraries/owl-carousel-new/assets/owl.video.play.png"
+    },
+    {
+      "page": "wp-content/uploads/elementor/css/custom-lightbox.min.css",
+      "change": "Missing custom lightbox stylesheet replaced with captured Elementor standard lightbox stylesheet"
+    }
+  ],
+  "capture_failures": [
+    {
+      "url": "https://nachtmensch-oder-fruehaufsteher.de/wp-content/plugins/unlimited-elements-for-elementor-premium/assets_libraries/owl-carousel-new/assets/owl.video.play.png",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://nachtmensch-oder-fruehaufsteher.de/wp-content/uploads/elementor/css/custom-lightbox.min.css",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ]
+}

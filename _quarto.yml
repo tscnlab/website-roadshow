@@ -1,0 +1,22 @@
+project:
+  type: default
+  output-dir: docs/archive
+  render:
+    - archive.qmd
+  execute-dir: project
+  resources: []
+format:
+  html:
+    lang: de
+    theme: cosmo
+    embed-resources: true
+    toc: true
+    code-fold: true
+    code-summary: Python-Code anzeigen
+    title-block-banner: "#112639"
+execute:
+  daemon: false
+  echo: true
+  warning: false
+  error: false
+jupyter: python3
